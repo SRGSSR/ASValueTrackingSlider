@@ -12,6 +12,7 @@
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 #import "ASValuePopUpView.h"
+#import "ASValueTrackingSlider.h"
 
 @implementation CALayer (ASAnimationAdditions)
 
@@ -34,6 +35,11 @@ NSString *const SliderFillColorAnim = @"fillColor";
 @end
 #endif
 
+@interface ASValuePopUpView ()
+
+@property (nonatomic, weak) ASValueTrackingSlider *trackingSlider;
+
+@end
 
 @implementation ASValuePopUpView
 {
@@ -71,14 +77,16 @@ NSString *const SliderFillColorAnim = @"fillColor";
 
 #pragma mark - public
 
-- (id)initWithFrame:(CGRect)frame
+- (id)initWithTrackingSlider:(ASValueTrackingSlider *)trackingSlider
 {
-    self = [super initWithFrame:frame];
+    self = [super initWithFrame:CGRectZero];
     if (self) {
+        self.trackingSlider = trackingSlider;
+        
         _shouldAnimate = NO;
         self.layer.anchorPoint = CGPointMake(0.5, 1);
         
-        self.userInteractionEnabled = NO;
+        self.userInteractionEnabled = YES;
         _pathLayer = (CAShapeLayer *)self.layer; // ivar can now be accessed without casting to CAShapeLayer every time
         
         _cornerRadius = 4.0;
@@ -222,14 +230,14 @@ NSString *const SliderFillColorAnim = @"fillColor";
     return CGSizeMake(w, h);
 }
 
-- (void)showAnimated:(BOOL)animated
+- (void)showAnimated:(BOOL)animated completionBlock:(void (^)())block
 {
-    if (!animated) {
-        self.layer.opacity = 1.0;
-        return;
-    }
-    
     [CATransaction begin]; {
+        [CATransaction setCompletionBlock:^{
+            block();
+            self.layer.transform = CATransform3DIdentity;
+        }];
+        if (animated) {
         // start the transform animation from scale 0.5, or its current value if it's already running
         NSValue *fromValue = [self.layer animationForKey:@"transform"] ? [self.layer.presentationLayer valueForKey:@"transform"] : [NSValue valueWithCATransform3D:CATransform3DMakeScale(0.5, 0.5, 1)];
         
@@ -242,7 +250,10 @@ NSString *const SliderFillColorAnim = @"fillColor";
         [self.layer animateKey:@"opacity" fromValue:nil toValue:@1.0 customize:^(CABasicAnimation *animation) {
             animation.duration = 0.1;
         }];
-    } [CATransaction commit];
+        } else { // not animated - just set opacity to 1.0
+                self.layer.opacity = 1.0;
+            }
+        } [CATransaction commit];
 }
 
 - (void)hideAnimated:(BOOL)animated completionBlock:(void (^)())block

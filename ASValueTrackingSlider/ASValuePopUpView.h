@@ -13,12 +13,16 @@
 
 #import <UIKit/UIKit.h>
 
+@class ASValueTrackingSlider;
+
 @protocol ASValuePopUpViewDelegate <NSObject>
 - (CGFloat)currentValueOffset; //expects value in the range 0.0 - 1.0
 - (void)colorDidUpdate:(UIColor *)opaqueColor;
 @end
 
 @interface ASValuePopUpView : UIView
+
+- (instancetype)initWithTrackingSlider:(ASValueTrackingSlider *)trackingSlider;
 
 @property (weak, nonatomic) id <ASValuePopUpViewDelegate> delegate;
 @property (nonatomic) CGFloat cornerRadius;
@@ -44,7 +48,7 @@
 
 - (CGSize)popUpSizeForString:(NSString *)string;
 
-- (void)showAnimated:(BOOL)animated;
+- (void)showAnimated:(BOOL)animated completionBlock:(void (^)())block;
 - (void)hideAnimated:(BOOL)animated completionBlock:(void (^)())block;
 
 @end

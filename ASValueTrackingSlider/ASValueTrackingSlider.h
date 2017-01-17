@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <SRGMediaPlayer/SRGTimeSlider.h>
 @protocol ASValueTrackingSliderDelegate;
 @protocol ASValueTrackingSliderDataSource;
 
-@interface ASValueTrackingSlider : UISlider
+@interface ASValueTrackingSlider : SRGTimeSlider
 
 // present the popUpView manually, without touch event.
 - (void)showPopUpViewAnimated:(BOOL)animated;
@@ -60,7 +61,7 @@
 @property (weak, nonatomic) id<ASValueTrackingSliderDataSource> dataSource;
 
 // delegate is only needed when used with a TableView or CollectionView - see below
-@property (weak, nonatomic) id<ASValueTrackingSliderDelegate> delegate;
+@property (weak, nonatomic) id<ASValueTrackingSliderDelegate> asDelegate;
 @end
 
 
@@ -78,6 +79,8 @@
 - (void)sliderWillDisplayPopUpView:(ASValueTrackingSlider *)slider;
 
 @optional
+- (void)sliderDidDisplayPopUpView:(ASValueTrackingSlider *)slider;
+
 - (void)sliderWillHidePopUpView:(ASValueTrackingSlider *)slider;
 - (void)sliderDidHidePopUpView:(ASValueTrackingSlider *)slider;
 @end

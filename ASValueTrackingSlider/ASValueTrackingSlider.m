@@ -20,6 +20,7 @@
     UIColor *_popUpViewColor;
     NSArray *_keyTimes;
     CGFloat _valueRange;
+    BOOL _tracking;
 }
 
 #pragma mark - initialization
@@ -224,7 +225,7 @@
     [formatter setMinimumFractionDigits:2];
     _numberFormatter = formatter;
 
-    self.popUpView = [[ASValuePopUpView alloc] initWithFrame:CGRectZero];
+    self.popUpView = [[ASValuePopUpView alloc] initWithTrackingSlider:self];
     self.popUpViewColor = [UIColor colorWithHue:0.6 saturation:0.6 brightness:0.5 alpha:0.8];
 
     self.popUpView.alpha = 0.0;
@@ -304,18 +305,22 @@
 
 - (void)_showPopUpViewAnimated:(BOOL)animated
 {
-    if (self.delegate) [self.delegate sliderWillDisplayPopUpView:self];
-    [self.popUpView showAnimated:animated];
+    if (self.asDelegate) [self.asDelegate sliderWillDisplayPopUpView:self];
+    [self.popUpView showAnimated:animated completionBlock:^{
+        if ([self.asDelegate respondsToSelector:@selector(sliderDidDisplayPopUpView:)]) {
+            [self.asDelegate sliderDidDisplayPopUpView:self];
+        }
+    }];
 }
 
 - (void)_hidePopUpViewAnimated:(BOOL)animated
 {
-    if ([self.delegate respondsToSelector:@selector(sliderWillHidePopUpView:)]) {
-        [self.delegate sliderWillHidePopUpView:self];
+    if ([self.asDelegate respondsToSelector:@selector(sliderWillHidePopUpView:)]) {
+        [self.asDelegate sliderWillHidePopUpView:self];
     }
     [self.popUpView hideAnimated:animated completionBlock:^{
-        if ([self.delegate respondsToSelector:@selector(sliderDidHidePopUpView:)]) {
-            [self.delegate sliderDidHidePopUpView:self];
+        if ([self.asDelegate respondsToSelector:@selector(sliderDidHidePopUpView:)]) {
+            [self.asDelegate sliderDidHidePopUpView:self];
         }
     }];
 }
@@ -375,36 +380,6 @@
 {
     self.autoAdjustTrackColor = NO; // if a custom value is set then prevent auto coloring
     [super setMinimumTrackTintColor:color];
-}
-
-- (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
-{
-    BOOL begin = [super beginTrackingWithTouch:touch withEvent:event];
-    if (begin && !self.popUpViewAlwaysOn) [self _showPopUpViewAnimated:YES];
-    return begin;
-}
-
-- (BOOL)continueTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
-{
-    BOOL continueTrack = [super continueTrackingWithTouch:touch withEvent:event];
-    if (continueTrack) {
-        [self.popUpView setAnimationOffset:[self currentValueOffset] returnColor:^(UIColor *opaqueReturnColor) {
-            super.minimumTrackTintColor = opaqueReturnColor;
-        }];
-    }
-    return continueTrack;
-}
-
-- (void)cancelTrackingWithEvent:(UIEvent *)event
-{
-    [super cancelTrackingWithEvent:event];
-    if (self.popUpViewAlwaysOn == NO) [self _hidePopUpViewAnimated:YES];
-}
-
-- (void)endTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
-{
-    [super endTrackingWithTouch:touch withEvent:event];
-    if (self.popUpViewAlwaysOn == NO) [self _hidePopUpViewAnimated:YES];
 }
 
 @end
