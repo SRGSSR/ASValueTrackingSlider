@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <SRGMediaPlayer/SRGTimeSlider.h>
+
 @protocol ASValueTrackingSliderDelegate;
 @protocol ASValueTrackingSliderDataSource;
 

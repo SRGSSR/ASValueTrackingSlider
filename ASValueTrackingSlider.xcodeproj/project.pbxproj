@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		08B934AB1E39084100CFE85A /* ASValueTrackingSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = 08B934A91E39084100CFE85A /* ASValueTrackingSlider.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		08B934B41E39088100CFE85A /* ASValuePopUpView.h in Headers */ = {isa = PBXBuildFile; fileRef = 08B934B11E39088100CFE85A /* ASValuePopUpView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		08B934B41E39088100CFE85A /* ASValuePopUpView.h in Headers */ = {isa = PBXBuildFile; fileRef = 08B934B11E39088100CFE85A /* ASValuePopUpView.h */; };
 		08B934B51E39088100CFE85A /* ASValuePopUpView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B934B21E39088100CFE85A /* ASValuePopUpView.m */; };
 		08B934B61E39088100CFE85A /* ASValueTrackingSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B934B31E39088100CFE85A /* ASValueTrackingSlider.m */; };
 		08B934BB1E3908D000CFE85A /* libextobjc.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08B934B81E3908D000CFE85A /* libextobjc.framework */; };
@@ -88,8 +88,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				08B934B41E39088100CFE85A /* ASValuePopUpView.h in Headers */,
 				08B934AB1E39084100CFE85A /* ASValueTrackingSlider.h in Headers */,
+				08B934B41E39088100CFE85A /* ASValuePopUpView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
