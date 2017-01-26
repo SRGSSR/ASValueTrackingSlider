@@ -1,7 +1,14 @@
-ASValueTrackingSlider
+ASValueTrackingSlider + SRGMediaPlayer
 ========
 
-###What is it?
+###Difference between the orginal ASValueTrackingSlider and this fork
+
+`ASValueTrackingSlider` inherits from `UISlider`. `SRGMediaPlayer` has its `SRGTimeSlider`, which inherits from `UISlider` too.
+
+This fork changes `ASValueTrackingSlider` to inherit from `SRGTimeSlider`. It also adds the avaibility to grab the slider bubble to seek the slider.
+
+
+###What is ASValueTrackingSlider?
 
 
 A UISlider subclass that displays live values in an easy to customize popup view.
