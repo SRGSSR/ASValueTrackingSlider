@@ -70,7 +70,7 @@
 // to supply custom text to the popUpView label, implement <ASValueTrackingSliderDataSource>
 // the dataSource will be messaged each time the slider value changes
 @protocol ASValueTrackingSliderDataSource <NSObject>
-- (NSString *)slider:(ASValueTrackingSlider *)slider stringForValue:(float)value;
+- (NSAttributedString *)slider:(ASValueTrackingSlider *)slider attributedStringForValue:(float)value;
 @end
 
 // when embedding an ASValueTrackingSlider inside a TableView or CollectionView

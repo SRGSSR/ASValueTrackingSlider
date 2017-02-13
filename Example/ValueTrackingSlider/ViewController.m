@@ -73,7 +73,7 @@
 
 #pragma mark - ASValueTrackingSliderDataSource
 
-- (NSString *)slider:(ASValueTrackingSlider *)slider stringForValue:(float)value;
+- (NSAttributedString *)slider:(ASValueTrackingSlider *)slider attributedStringForValue:(float)value;
 {
     value = roundf(value);
     NSString *s;
@@ -84,7 +84,7 @@
     } else if (value >= 50.0) {
         s = @"I’m Melting!";
     }
-    return s;
+    return s ? [[NSAttributedString alloc] initWithString:s] : nil;
 }
 
 #pragma mark - IBActions

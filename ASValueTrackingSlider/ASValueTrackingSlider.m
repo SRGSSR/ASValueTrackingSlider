@@ -246,12 +246,12 @@
 
 - (void)updatePopUpView
 {
-    NSString *valueString; // ask dataSource for string, if nil or blank, get string from _numberFormatter
+    NSAttributedString *valueAttributedString; // ask dataSource for string, if nil or blank, get string from _numberFormatter
     CGSize popUpViewSize;
-    if ((valueString = [self.dataSource slider:self stringForValue:self.value]) && valueString.length != 0) {
-        popUpViewSize = [self.popUpView popUpSizeForString:valueString];
+    if ((valueAttributedString = [self.dataSource slider:self attributedStringForValue:self.value]) && valueAttributedString.length != 0) {
+        popUpViewSize = [self.popUpView popUpSizeForAttributedString:valueAttributedString];
     } else {
-        valueString = [_numberFormatter stringFromNumber:@(self.value)];
+        valueAttributedString = [[NSAttributedString alloc] initWithString:[_numberFormatter stringFromNumber:@(self.value)]];
         popUpViewSize = [self calculatePopUpViewSize];
     }
     
@@ -271,14 +271,14 @@
     CGFloat offset = minOffsetX < 0.0 ? minOffsetX : (maxOffsetX > 0.0 ? maxOffsetX : 0.0);
     popUpRect.origin.x -= offset;
     
-    [self.popUpView setFrame:popUpRect arrowOffset:offset text:valueString];
+    [self.popUpView setFrame:popUpRect arrowOffset:offset text:valueAttributedString];
 }
 
 - (CGSize)calculatePopUpViewSize
 {
     // negative values need more width than positive values
-    CGSize minValSize = [self.popUpView popUpSizeForString:[_numberFormatter stringFromNumber:@(self.minimumValue)]];
-    CGSize maxValSize = [self.popUpView popUpSizeForString:[_numberFormatter stringFromNumber:@(self.maximumValue)]];
+    CGSize minValSize = [self.popUpView popUpSizeForAttributedString:[[NSAttributedString alloc] initWithString:[_numberFormatter stringFromNumber:@(self.minimumValue)]]];
+    CGSize maxValSize = [self.popUpView popUpSizeForAttributedString:[[NSAttributedString alloc] initWithString:[_numberFormatter stringFromNumber:@(self.maximumValue)]]];
 
     return (minValSize.width >= maxValSize.width) ? minValSize : maxValSize;
 }

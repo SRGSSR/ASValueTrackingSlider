@@ -148,10 +148,10 @@ NSString *const SliderFillColorAnim = @"fillColor";
     _textLayer.fontSize = font.pointSize;
 }
 
-- (void)setText:(NSString *)string
+- (void)setText:(NSAttributedString *)text
 {
-    [[_attributedString mutableString] setString:string];
-    _textLayer.string = string;
+    [_attributedString setAttributedString:text];
+    _textLayer.string = text;
 }
 
 // set up an animation, but prevent it from running automatically
@@ -188,7 +188,7 @@ NSString *const SliderFillColorAnim = @"fillColor";
     }
 }
 
-- (void)setFrame:(CGRect)frame arrowOffset:(CGFloat)arrowOffset text:(NSString *)text
+- (void)setFrame:(CGRect)frame arrowOffset:(CGFloat)arrowOffset text:(NSAttributedString *)text
 {
     // only redraw path if either the arrowOffset or popUpView size has changed
     if (arrowOffset != _arrowCenterOffset || !CGSizeEqualToSize(frame.size, self.frame.size)) {
@@ -221,9 +221,9 @@ NSString *const SliderFillColorAnim = @"fillColor";
     _shouldAnimate = NO;
 }
 
-- (CGSize)popUpSizeForString:(NSString *)string
+- (CGSize)popUpSizeForAttributedString:(NSAttributedString *)attributedString
 {
-    [[_attributedString mutableString] setString:string];
+    [_attributedString setAttributedString:attributedString];
     CGFloat w, h;
     w = ceilf([_attributedString size].width * _widthPaddingFactor);
     h = ceilf(([_attributedString size].height * _heightPaddingFactor) + _arrowLength);
